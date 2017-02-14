@@ -66,7 +66,7 @@ class CephBrokerTestCase(unittest.TestCase):
                               "services": ["nova"]}))
         _check_call.assert_called_with(['ceph', 'auth', 'caps',
                                         'client.nova', 'mon', 'allow r', 'osd',
-                                        'allow rwx pool=glance pool=cinder'])
+                                        'allow rwx pool=glance, allow rwx pool=cinder'])
 
     @mock.patch('ceph_broker.monitor_key_set')
     @mock.patch('ceph_broker.monitor_key_get')
