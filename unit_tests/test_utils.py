@@ -90,10 +90,10 @@ class CephTestCase(unittest.TestCase):
         _ceph_disk.return_value = ['ceph-disk', 'prepare']
         _is_active_bluestore_device.return_value = False
         utils.osdize('/dev/sdb', osd_format='xfs', osd_journal=None,
-                     reformat_osd=True, bluestore=False)
+                     bluestore=False)
         _ceph_disk.assert_called_with('/dev/sdb', 'xfs', None, False, False)
         _check_call.assert_called_with(['ceph-disk', 'prepare'])
-        _zap_disk.assert_called_once()
+        _zap_disk.assert_not_called()
         db.get.assert_called_with('osd-devices', [])
         db.set.assert_called_with('osd-devices', ['/dev/sdb'])
         db.flush.assert_called_once()
@@ -121,10 +121,10 @@ class CephTestCase(unittest.TestCase):
         _ceph_volume.return_value = ['ceph-volume', 'prepare']
         _is_active_bluestore_device.return_value = False
         utils.osdize('/dev/sdb', osd_format='xfs', osd_journal=None,
-                     reformat_osd=True, bluestore=False)
+                     bluestore=False)
         _ceph_volume.assert_called_with('/dev/sdb', None, False, False, 'ceph')
         _check_call.assert_called_with(['ceph-volume', 'prepare'])
-        _zap_disk.assert_called_once()
+        _zap_disk.assert_not_called()
         db.get.assert_called_with('osd-devices', [])
         db.set.assert_called_with('osd-devices', ['/dev/sdb'])
         db.flush.assert_called_once()
@@ -136,7 +136,7 @@ class CephTestCase(unittest.TestCase):
         _kv.return_value = db
         db.get.return_value = ['/dev/sdb']
         utils.osdize('/dev/sdb', osd_format='xfs', osd_journal=None,
-                     reformat_osd=True, bluestore=False)
+                     bluestore=False)
         db.get.assert_called_with('osd-devices', [])
         db.set.assert_not_called()
 
